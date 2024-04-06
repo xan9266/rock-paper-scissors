@@ -1,46 +1,48 @@
 // Define your array of strings
 const gameOptions = ["rock", "paper", "scissors"];
 
-// Function to capitalize the first letter of a string
-const capitalize = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-};
-
 // Function to determine the winner of a round
 const winnerOfRound = (computer, player) => {
-    return (
-        (computer === "rock" && player === "paper") ? "player" :
-        (computer === "rock" && player === "scissors") ? "computer" :
+    const computerChoice = computer.toLowerCase();
+    const playerChoice = player.toLowerCase();
 
-        (computer === "paper" && player === "rock") ? "computer" :
-        (computer === "paper" && player === "scissors") ? "player" :
-
-        (computer === "scissors" && player === "rock") ? "player" :
-        (computer === "scissors" && player === "paper") ? "computer" :
-        (computer ===  player) ? "tie" :
-
-        "Invalid input. Please choose from Rock, Paper, or Scissors."
-    );
+    if (
+        (computerChoice === "rock" && playerChoice === "paper") ||
+        (computerChoice === "paper" && playerChoice === "scissors") ||
+        (computerChoice === "scissors" && playerChoice === "rock")
+    ) {
+        return "player";
+    } else if (
+        (computerChoice === "rock" && playerChoice === "scissors") ||
+        (computerChoice === "paper" && playerChoice === "rock") ||
+        (computerChoice === "scissors" && playerChoice === "paper")
+    ) {
+        return "computer";
+    } else if (computerChoice === playerChoice) {
+        return "tie";
+    } else {
+        return "Invalid input. Please choose from Rock, Paper, or Scissors.";
+    }
 };
 
 // Function to play a single round
 const playRound = () => {
     // Select a random item from the array
-    const computerChoice = capitalize(gameOptions[Math.floor(Math.random() * gameOptions.length)]);
+    const computerChoice = gameOptions[Math.floor(Math.random() * gameOptions.length)];
     // Let the player choose
-    const playerChoice = capitalize(prompt("What will you play this turn?"));
+    const playerChoice = prompt("What will you play this turn?").toLowerCase();
     // Determine the winner of the round
-    const result = winnerOfRound(computerChoice.toLowerCase(), playerChoice.toLowerCase());
+    const result = winnerOfRound(computerChoice, playerChoice);
     // Return a string describing the result of the round
     switch(result) {
         case "player":
-            return "You Win! " + playerChoice + " beats " + computerChoice;
+            return "You Win! " + playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1) + " beats " + computerChoice;
         case "computer":
-            return "You Lose! " + computerChoice + " beats " + playerChoice;
+            return "You Lose! " + computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1) + " beats " + playerChoice;
         case "tie":
             return "It's a Tie! Both chose " + playerChoice;
         default:
-            return "Invalid input. Please choose from Rock, Paper, or Scissors.";
+            return result; // Just return the error message
     }
 };
 
